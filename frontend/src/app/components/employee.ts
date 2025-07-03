@@ -3,6 +3,7 @@ import { Employee } from '../models/employee';
 import { EmployeeService } from '../services/employee';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { title } from 'process';
 
 @Component({
   standalone: true,
@@ -18,9 +19,10 @@ export class EmployeeComponent implements OnInit{
   loading: boolean = true;
   employee: Employee = { name: '', title: '', email: '', password: ''};
   searchTerm: string='';
-  showModal: boolean = false;
-  employeeForm!: FormGroup;
-  
+  showAddModal: boolean = false;
+  showEditModal: boolean = false;
+  employeeForm!: FormGroup;  
+  employeeId: number | null = null;
 
   constructor(private fb: FormBuilder, private service: EmployeeService) {
 
@@ -68,7 +70,6 @@ export class EmployeeComponent implements OnInit{
 
   saveEmployee(): void{
     if(this.employeeForm.invalid){
-      console.log(this.employeeForm.get('name')?.errors);
       this.employeeForm.markAllAsTouched();
       return
     }
@@ -84,12 +85,52 @@ export class EmployeeComponent implements OnInit{
     this.employee = { name: '', title: '', email: '', password: ''};
   }
 
-  openModal(): void{
-    this.showModal = true;
+  openAddModal(): void{
+    this.showAddModal = true;
     this.resetForm();
+    if(!this.employeeForm.contains("password")){
+      this.employeeForm.addControl("password",
+        this.fb.control('',[
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(20),
+          Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,20}$/)
+        ])
+      );
+    }
+  }
+
+  openEditModal(emp: any): void{
+    console.log("In");
+    this.showEditModal = true;
+    this.employeeId = emp.id;
+
+    if(this.employeeForm.contains("password")){
+      this.employeeForm.removeControl("password");
+    }
+
+    this.employeeForm.patchValue({
+      name: emp.name,
+      title: emp.title,
+      email: emp.email
+    });
+  }
+
+  updateEmployee(): void{
+    if(this.employeeForm.invalid){
+      this.employeeForm.markAllAsTouched();
+      return
+    }
+    this.employee = this.employeeForm.value;
+    this.service.updateEmployee(this.employeeId!, this.employee).subscribe( () => {
+      this.getEmployees();
+      this.resetForm();
+      this.closeModal();
+    })
   }
 
   closeModal(): void{
-    this.showModal = false;
+    this.showAddModal = false;
+    this.showEditModal = false;
   }
 }
