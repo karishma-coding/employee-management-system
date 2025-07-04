@@ -4,6 +4,7 @@ import { EmployeeService } from '../services/employee';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { title } from 'process';
+import { error } from 'console';
 
 @Component({
   standalone: true,
@@ -17,7 +18,7 @@ export class EmployeeComponent implements OnInit{
   employees: Employee[] = [];
   filteredEmployees: Employee[] = [];
   loading: boolean = true;
-  employee: Employee = { name: '', title: '', email: '', password: ''};
+  employee: Employee = {id: 0, name: '', title: '', email: '', password: ''};
   searchTerm: string='';
   showAddModal: boolean = false;
   showEditModal: boolean = false;
@@ -81,8 +82,36 @@ export class EmployeeComponent implements OnInit{
     })
   }
 
+  updateEmployee(): void{
+    if(this.employeeForm.invalid){
+      this.employeeForm.markAllAsTouched();
+      return
+    }
+    this.employee = this.employeeForm.value;
+    this.service.updateEmployee(this.employeeId!, this.employee).subscribe( () => {
+      this.getEmployees();
+      this.resetForm();
+      this.closeModal();
+    })
+  }
+
+  deleteEmployee(id: number): void {
+    console.log("Delete");
+    const confirmed = confirm("Do you wish to delete the records of employee id: " + id + "?");
+    if(confirmed){
+      this.service.deleteEmployee(id).subscribe({
+        next: () => {
+          this.getEmployees();
+        },
+        error: () => {
+          console.log("Error occured while deleting employee records.");
+        }
+      });
+    }
+  }
+
   resetForm(): void{
-    this.employee = { name: '', title: '', email: '', password: ''};
+    this.employee = {id: 0, name: '', title: '', email: '', password: ''};
   }
 
   openAddModal(): void{
@@ -114,19 +143,6 @@ export class EmployeeComponent implements OnInit{
       title: emp.title,
       email: emp.email
     });
-  }
-
-  updateEmployee(): void{
-    if(this.employeeForm.invalid){
-      this.employeeForm.markAllAsTouched();
-      return
-    }
-    this.employee = this.employeeForm.value;
-    this.service.updateEmployee(this.employeeId!, this.employee).subscribe( () => {
-      this.getEmployees();
-      this.resetForm();
-      this.closeModal();
-    })
   }
 
   closeModal(): void{

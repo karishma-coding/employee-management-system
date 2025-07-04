@@ -25,7 +25,7 @@
 				<td>{{emp.email}}</td>
 				<td>
 					<button class="btn btn-sm btn-primary me-2" (click)="openEditModal(emp)">Edit</button>
-					<button class="btn btn-sm btn-primary" click="deleteEmployee(emp)">Delete</button>
+					<button class="btn btn-sm btn-danger" (click)="deleteEmployee(emp.id!)">Delete</button>
 				</td>
 			</tr>
 		</tbody>
