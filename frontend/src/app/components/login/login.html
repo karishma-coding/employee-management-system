@@ -1,0 +1,18 @@
+<div class="container mt-4"> 
+    <h2 class="text-center">Employee Management</h2>
+    <div class="login-container">
+        <h2 class="text-center">Login</h2>
+        <form (ngSubmit) = "onLogin()" #loginForm = "ngForm">        
+            <p *ngIf="errorMsg" class="error">{{ errorMsg }}</p>
+            <div>
+                <label>Email:</label>
+                <input type="email" name="email" [(ngModel)]="email" required>
+            </div>
+            <div>
+                <label>Password:</label>
+                <input type="password" name="password" [(ngModel)]="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="!loginForm.form.valid">Submit</button>
+        </form>
+    </div>
+</div>
