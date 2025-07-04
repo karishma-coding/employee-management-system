@@ -1,0 +1,219 @@
+<div class="container mt-4">
+	<h2 class="text-center">Employee Management</h2>
+	<div *ngIf="loading" class="text-center my-3">
+		<div class="spinner-border text-primary" role="status">
+			<span class="visually-hidden">Loading...</span>
+		</div>
+	</div>
+	<div class="flex-container">
+		<div class="flex-column">
+			<button class="btn btn-primary mb-3 text-left" (click)="openAddModal()">Add Employee</button>
+		</div>
+		<div class="flex-column">
+			<button class="btn btn-danger mb-3 text-right" (click)="logout()">Logout</button>
+		</div>
+	</div>
+	
+	
+	<input type="text" class="form-control mb-3 search" placeholder="Search..." [(ngModel)]="searchTerm" (input)="filterEmployees()" />
+	<table *ngIf="!loading" class="employee-table" >
+		<thead>
+			<tr>
+				<th>Employee ID</th>
+				<th>Name</th>
+				<th>Title</th>
+				<th>Email</th>
+				<th>Operations</th>
+			</tr>
+		</thead>
+		<tbody *ngIf="!loading && filteredEmployees.length > 0; else noData">
+			<tr *ngFor="let emp of filteredEmployees">
+				<td>{{emp.id}}</td>
+				<td>{{emp.name}}</td>
+				<td>{{emp.title}}</td>
+				<td>{{emp.email}}</td>
+				<td>
+					<button class="btn btn-sm btn-primary me-2" (click)="openEditModal(emp)">Edit</button>
+					<button class="btn btn-sm btn-danger" (click)="deleteEmployee(emp.id!)">Delete</button>
+				</td>
+			</tr>
+		</tbody>
+		<ng-template #noData>
+			<tbody *ngIf="!loading">
+				<tr>
+					<td colspan="5" class="text-center text-muted">No records found</td>
+				</tr>
+			</tbody>
+		</ng-template>
+	</table>
+</div>
+<div class="modal-backdrop fade show" *ngIf="showAddModal || showEditModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1040;"></div>
+<div
+	class="modal show d-block"
+	*ngIf="showAddModal"
+	>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form [formGroup]="employeeForm" (ngSubmit)="saveEmployee()">
+			<div class="modal-header">
+				<h5 class="modal-title">Add Employee</h5>
+				<button type="button" class="btn-close" (click)="showAddModal = false"></button>
+			</div>
+			<div class="modal-body">
+				<div class="mb-3">
+					<label>Name</label>
+					<input
+					type="text"
+					formControlName="name"
+					class="form-control"
+					[class.is-invalid]="employeeForm.get('name')?.invalid && employeeForm.get('name')?.touched"
+					[class.is-valid]="employeeForm.get('name')?.valid && employeeForm.get('name')?.touched"
+					/>
+					<small class="text-danger"
+						*ngIf="employeeForm.get('name')?.hasError('required') && employeeForm.get('name')?.touched">
+					Name is required.
+					</small>
+					<small class="text-danger"
+						*ngIf="employeeForm.get('name')?.hasError('pattern') && employeeForm.get('name')?.touched">
+					Name must contain only alphabets and spaces.
+					</small>
+				</div>
+				<div class="mb-3">
+					<label>Title</label>
+					<input
+					type="text"
+					formControlName="title"
+					class="form-control"
+					[class.is-invalid]="employeeForm.get('title')?.invalid && employeeForm.get('title')?.touched"
+					[class.is-valid]="employeeForm.get('title')?.valid && employeeForm.get('title')?.touched"
+					/>
+					<small class="text-danger"
+						*ngIf="employeeForm.get('title')?.hasError('required') && employeeForm.get('title')?.touched">
+					Title is required.
+					</small>
+					<small class="text-danger"
+						*ngIf="employeeForm.get('title')?.hasError('pattern') && employeeForm.get('title')?.touched">
+					Title must contain only alphabets and spaces.
+					</small>
+				</div>
+				<div class="mb-3">
+					<label>Email</label>
+					<input
+					type="email"
+					formControlName="email"
+					class="form-control"
+					[class.is-invalid]="employeeForm.get('email')?.invalid && employeeForm.get('email')?.touched"
+					[class.is-valid]="employeeForm.get('email')?.valid && employeeForm.get('email')?.touched"
+					/>
+					<small class="text-danger"
+						*ngIf="employeeForm.get('email')?.hasError('required') && employeeForm.get('email')?.touched">
+					Email is required.
+					</small>
+					<small class="text-danger"
+						*ngIf="employeeForm.get('email')?.hasError('email') && employeeForm.get('email')?.touched">
+					Email must be in a valid format.
+					</small>
+				</div>
+				<div class="mb-3">
+					<label>Password</label>
+					<input
+					type="password"
+					formControlName="password"
+					class="form-control"
+					[class.is-invalid]="employeeForm.get('password')?.invalid && employeeForm.get('password')?.touched"
+					[class.is-valid]="employeeForm.get('password')?.valid && employeeForm.get('password')?.touched"
+					/>
+					<small class="text-danger"
+						*ngIf="employeeForm.get('password')?.hasError('required') && employeeForm.get('password')?.touched">
+					Password is required.
+					</small>
+					<small class="text-danger"
+						*ngIf="employeeForm.get('password')?.hasError('pattern') && employeeForm.get('password')?.touched">
+					Password must be 8-20 characters having 1 uppercase character, 1 lowercase character, 1 number and 1 special character
+					</small>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-success">Save</button>
+				<button type="button" class="btn btn-secondary" (click)="showAddModal = false">Cancel</button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div
+	class="modal show d-block"
+	*ngIf="showEditModal"
+	>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form [formGroup]="employeeForm" (ngSubmit)="updateEmployee()">
+			<div class="modal-header">
+				<h5 class="modal-title">Edit Employee</h5>
+				<button type="button" class="btn-close" (click)="showEditModal = false"></button>
+			</div>
+			<div class="modal-body">
+				<div class="mb-3">
+					<label>Name</label>
+					<input
+					type="text"
+					formControlName="name"
+					class="form-control"
+					[class.is-invalid]="employeeForm.get('name')?.invalid && employeeForm.get('name')?.touched"
+					[class.is-valid]="employeeForm.get('name')?.valid && employeeForm.get('name')?.touched"
+					/>
+					<small class="text-danger"
+						*ngIf="employeeForm.get('name')?.hasError('required') && employeeForm.get('name')?.touched">
+					Name is required.
+					</small>
+					<small class="text-danger"
+						*ngIf="employeeForm.get('name')?.hasError('pattern') && employeeForm.get('name')?.touched">
+					Name must contain only alphabets and spaces.
+					</small>
+				</div>
+				<div class="mb-3">
+					<label>Title</label>
+					<input
+					type="text"
+					formControlName="title"
+					class="form-control"
+					[class.is-invalid]="employeeForm.get('title')?.invalid && employeeForm.get('title')?.touched"
+					[class.is-valid]="employeeForm.get('title')?.valid && employeeForm.get('title')?.touched"
+					/>
+					<small class="text-danger"
+						*ngIf="employeeForm.get('title')?.hasError('required') && employeeForm.get('title')?.touched">
+					Title is required.
+					</small>
+					<small class="text-danger"
+						*ngIf="employeeForm.get('title')?.hasError('pattern') && employeeForm.get('title')?.touched">
+					Title must contain only alphabets and spaces.
+					</small>
+				</div>
+				<div class="mb-3">
+					<label>Email</label>
+					<input
+					type="email"
+					formControlName="email"
+					class="form-control"
+					[class.is-invalid]="employeeForm.get('email')?.invalid && employeeForm.get('email')?.touched"
+					[class.is-valid]="employeeForm.get('email')?.valid && employeeForm.get('email')?.touched"
+					/>
+					<small class="text-danger"
+						*ngIf="employeeForm.get('email')?.hasError('required') && employeeForm.get('email')?.touched">
+					Email is required.
+					</small>
+					<small class="text-danger"
+						*ngIf="employeeForm.get('email')?.hasError('email') && employeeForm.get('email')?.touched">
+					Email must be in a valid format.
+					</small>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-success">Update</button>
+				<button type="button" class="btn btn-secondary" (click)="showEditModal = false">Cancel</button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
