@@ -13,7 +13,6 @@ export class AuthGuard implements CanActivate {
   canActivate(): boolean {
     if(isPlatformBrowser(this.platformId)){
       const isLoggedIn = localStorage.getItem("isLoggedIn");
-      console.log(isLoggedIn);
       if(isLoggedIn==="true"){
         return true;
       }
