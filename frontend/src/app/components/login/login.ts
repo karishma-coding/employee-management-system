@@ -1,27 +1,48 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
 
-export class LoginComponent {
+export class LoginComponent implements OnInit{
   email = "";
   password = "";
   errorMsg = "";
+  loginForm!: FormGroup; 
 
-  constructor(private authService: AuthService, private router: Router){
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router){
+  }
+
+  ngOnInit(): void{
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(20),
+          Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,20}$/)
+        ]
+      ]
+    });
   }
 
   onLogin(){
-    this.authService.login(this.email,this.password).subscribe({
+    if(this.loginForm.invalid){
+      this.loginForm.markAllAsTouched();
+      return
+    }
+    const { email, password } = this.loginForm.value;
+    this.authService.login(email,password).subscribe({
       next: (res: string) => {
         if(res==""){
           localStorage.setItem("isLoggedIn","true")
