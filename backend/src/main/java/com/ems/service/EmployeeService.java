@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ems.model.Employee;
@@ -14,6 +15,9 @@ public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public List<Employee> getAllEmployees(){
         return employeeRepository.findAll();
     }
@@ -23,6 +27,8 @@ public class EmployeeService {
     }
 
     public Employee saveEmployee(Employee employee){
+        String hashPassword = passwordEncoder.encode(employee.getPassword());
+        employee.setPassword(hashPassword);
         return employeeRepository.save(employee);
     }
 
