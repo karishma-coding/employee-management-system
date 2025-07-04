@@ -25,6 +25,7 @@ export class EmployeeComponent implements OnInit{
   showEditModal: boolean = false;
   employeeForm!: FormGroup;  
   employeeId: number | null = null;
+  showPassword: boolean = false;
 
   constructor(private fb: FormBuilder, private service: EmployeeService, private router: Router) {
 
@@ -97,7 +98,6 @@ export class EmployeeComponent implements OnInit{
   }
 
   deleteEmployee(id: number): void {
-    console.log("Delete");
     const confirmed = confirm("Do you wish to delete the records of employee id: " + id + "?");
     if(confirmed){
       this.service.deleteEmployee(id).subscribe({
@@ -131,7 +131,6 @@ export class EmployeeComponent implements OnInit{
   }
 
   openEditModal(emp: any): void{
-    console.log("In");
     this.showEditModal = true;
     this.employeeId = emp.id;
 
@@ -150,6 +149,10 @@ export class EmployeeComponent implements OnInit{
     this.showAddModal = false;
     this.showEditModal = false;
   }
+  
+  togglePassword(): void{
+    this.showPassword = !this.showPassword;
+  }  
 
   logout(): void{
     localStorage.removeItem("isLoggedIn");

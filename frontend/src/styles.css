@@ -1,0 +1,12 @@
+.bi {
+  font-size: 1.2rem;
+  color: #6c757d;
+}
+
+.bi:hover {
+  color: #000;
+}
+
+.input-group-text{
+  cursor: pointer;
+}
