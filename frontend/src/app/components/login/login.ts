@@ -45,16 +45,13 @@ export class LoginComponent implements OnInit{
     const { email, password } = this.loginForm.value;
     this.authService.login(email,password).subscribe({
       next: (res: string) => {
-        if(res==""){
-          localStorage.setItem("isLoggedIn","true")
-          this.router.navigate(["/employee"]);
-        }
-        else{
-          this.errorMsg = res;
-        }
+        this.errorMsg = '';
+        localStorage.setItem("isLoggedIn","true")
+        this.router.navigate(["/employee"]);
       },
-      error: () => {
-        console.log("Server error. Try again later");
+      error: (err) => {
+        console.log('Login error:', err);
+        this.errorMsg = err.error;
       }
     });
   }

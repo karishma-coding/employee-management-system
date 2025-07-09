@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.ems.exception.EmailNotFoundException;
+import com.ems.exception.PasswordIncorrectException;
 import com.ems.model.Employee;
 import com.ems.repository.EmployeeRepository;
 
@@ -17,15 +19,14 @@ public class AuthService {
 
     public String login(Employee employee){
         Employee employeeDb = employeeRepository.findByEmail(employee.getEmail());
-        String msg="";
         if(employeeDb==null){
-            msg="Email Id doesn't exists. Please register first.";
+            throw new EmailNotFoundException("Email Id doesn't exists. Please register first.");
         }
         else{
             if (!passwordEncoder.matches(employee.getPassword(), employeeDb.getPassword())) {
-                msg = "The password entered is incorrect. Please check once";
+                throw new PasswordIncorrectException("The password entered is incorrect. Please check once");
             }
         }
-        return msg;
+        return "Login successful";
     }
 }

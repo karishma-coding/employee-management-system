@@ -20,7 +20,7 @@ export class AuthService {
     const user: Employee = { email, password };
     return this.http.post(this.loginUrl, user, { responseType: 'text' }).pipe(
       tap((res: string) => {
-        if(res===""){
+        if(res==="Login successful"){
           localStorage.setItem("isLoggedIn","true");
         }
       })
