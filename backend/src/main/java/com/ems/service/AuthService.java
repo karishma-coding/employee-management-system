@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.ems.exception.EmailNotFoundException;
 import com.ems.exception.PasswordIncorrectException;
 import com.ems.model.Employee;
+import com.ems.model.LoginEmployee;
 import com.ems.repository.EmployeeRepository;
 
 @Service
@@ -17,7 +18,7 @@ public class AuthService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public String login(Employee employee){
+    public String login(LoginEmployee employee){
         Employee employeeDb = employeeRepository.findByEmail(employee.getEmail());
         if(employeeDb==null){
             throw new EmailNotFoundException("Email Id doesn't exists. Please register first.");
