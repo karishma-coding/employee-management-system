@@ -60,6 +60,11 @@
 				<button type="button" class="btn-close" (click)="showAddModal = false"></button>
 			</div>
 			<div class="modal-body">
+				<div *ngIf="validationErrorKeys().length > 0">
+					<div *ngFor="let key of validationErrorKeys()" class="error" style="color: red;">
+						{{ validationErrors[key] }}
+					</div>
+				</div>
 				<div class="mb-3">
 					<label>Name</label>
 					<input
@@ -158,7 +163,12 @@
 				<h5 class="modal-title">Edit Employee</h5>
 				<button type="button" class="btn-close" (click)="showEditModal = false"></button>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body">				
+				<div *ngFor="let key of validationErrorKeys()">
+					<div class="error" style="color: red;">
+						{{ validationErrors[key] }}
+					</div>
+				</div>
 				<div class="mb-3">
 					<label>Name</label>
 					<input

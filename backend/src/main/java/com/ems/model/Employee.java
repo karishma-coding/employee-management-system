@@ -15,11 +15,11 @@ public class Employee {
     private long id;
 
     @NotBlank(message = "Name is required")
-    @Pattern(regexp = "^/^[A-Za-z ]+$/", message = "Name must contain only alphabets and spaces.")
+    @Pattern(regexp = "^[A-Za-z ]+$", message = "Name must contain only alphabets and spaces.")
     private String name;
 
     @NotBlank(message = "Title is required")
-    @Pattern(regexp = "^/^[A-Za-z ]+$/", message = "Title must contain only alphabets and spaces.")
+    @Pattern(regexp = "^[A-Za-z ]+$", message = "Title must contain only alphabets and spaces.")
     private String title;
 
     @NotBlank(message = "Email is required")
@@ -27,7 +27,7 @@ public class Employee {
     private String email;
 
     @NotBlank(message = "Password is required")
-    @Pattern(regexp = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\W_]).{8,20}$/", message = "Password must be 8-20 characters having 1 uppercase character, 1 lowercase character, 1 number and 1 special character")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\W_]).{8,20}$", message = "Password must be 8-20 characters having 1 uppercase character, 1 lowercase character, 1 number and 1 special character")
     private String password;
     
     public Employee() {

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ems.model.Employee;
 import com.ems.service.EmployeeService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @CrossOrigin("http://localhost:4200")
 @RequestMapping("/api/employees")
@@ -39,8 +41,9 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public Employee saveEmployee(@RequestBody Employee employee){
-        return employeeService.saveEmployee(employee);
+    public ResponseEntity<?> saveEmployee(@Valid @RequestBody Employee employee){
+        Employee saved = employeeService.saveEmployee(employee);
+        return ResponseEntity.ok(saved);
     }
 
     @PutMapping("/{id}")

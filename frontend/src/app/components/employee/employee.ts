@@ -26,6 +26,8 @@ export class EmployeeComponent implements OnInit{
   employeeForm!: FormGroup;  
   employeeId: number | null = null;
   showPassword: boolean = false;
+  validationErrors: { [key: string]: string } = {}; 
+  errorMsg: string = "";
 
   constructor(private fb: FormBuilder, private service: EmployeeService, private router: Router) {
 
@@ -77,11 +79,21 @@ export class EmployeeComponent implements OnInit{
       return
     }
     this.employee = this.employeeForm.value;
-    this.service.saveEmployee(this.employee).subscribe( () => {
-      this.getEmployees();
-      this.resetForm();
-      this.closeModal();
-    })
+    this.service.saveEmployee(this.employee).subscribe({
+      next: () => {
+        this.getEmployees();
+        this.resetForm();
+        this.closeModal();
+      },
+      error: (err) => {
+        if(err.status === 400 && typeof err.error === "object"){
+          this.validationErrors = err.error;
+        }
+        else{
+          this.errorMsg = "Failed to save Employees. Please try again";
+        }
+      }
+    });
   }
 
   updateEmployee(): void{
@@ -157,5 +169,9 @@ export class EmployeeComponent implements OnInit{
   logout(): void{
     localStorage.removeItem("isLoggedIn");
     this.router.navigate(["/"]);
+  }
+
+  validationErrorKeys(): string[] {
+    return Object.keys(this.validationErrors);
   }
 }
