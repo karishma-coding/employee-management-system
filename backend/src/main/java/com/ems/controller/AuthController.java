@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ems.model.Employee;
+import com.ems.model.LoginEmployee;
 import com.ems.service.AuthService;
 
 import jakarta.validation.Valid;
@@ -23,7 +23,7 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody Employee employee) {
+    public ResponseEntity<String> login(@Valid @RequestBody LoginEmployee employee) {
         return ResponseEntity.ok(authService.login(employee));
     }
     
