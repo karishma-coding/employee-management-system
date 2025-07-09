@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ems.dto.CreateEmployeeDTO;
+import com.ems.dto.UpdateEmployeeDTO;
 import com.ems.model.Employee;
 import com.ems.service.EmployeeService;
 
@@ -41,13 +43,13 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<?> saveEmployee(@Valid @RequestBody Employee employee){
+    public ResponseEntity<?> saveEmployee(@Valid @RequestBody CreateEmployeeDTO employee){
         Employee saved = employeeService.saveEmployee(employee);
         return ResponseEntity.ok(saved);
     }
 
     @PutMapping("/{id}")
-    public Employee updateEmployee(@PathVariable long id, @RequestBody Employee newEmployee){
+    public Employee updateEmployee(@PathVariable long id, @RequestBody UpdateEmployeeDTO newEmployee){
         return employeeService.updateEmployee(id, newEmployee);
     }
 

@@ -8,6 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import com.ems.dto.CreateEmployeeDTO;
+import com.ems.dto.UpdateEmployeeDTO;
 import com.ems.model.Employee;
 import com.ems.repository.EmployeeRepository;
 
@@ -28,18 +30,21 @@ public class EmployeeService {
         return employeeRepository.findById(id);
     }
 
-    public Employee saveEmployee(Employee employee){
-        String hashPassword = passwordEncoder.encode(employee.getPassword());
+    public Employee saveEmployee(CreateEmployeeDTO employeeDto){
+        Employee employee = new Employee();
+        employee.setName(employeeDto.getName());
+        employee.setTitle(employeeDto.getTitle());
+        employee.setEmail(employeeDto.getEmail());
+        String hashPassword = passwordEncoder.encode(employeeDto.getPassword());
         employee.setPassword(hashPassword);
         return employeeRepository.save(employee);
     }
 
-    public Employee updateEmployee(long id, Employee newEmployee){
+    public Employee updateEmployee(long id, UpdateEmployeeDTO newEmployee){
         return employeeRepository.findById(id)
             .map(emp -> {
                 emp.setName(newEmployee.getName());
                 emp.setEmail(newEmployee.getEmail());
-                emp.setPassword(newEmployee.getPassword());
                 emp.setTitle(newEmployee.getTitle());
                 return employeeRepository.save(emp);
             }).orElseThrow(() -> new RuntimeException("Employee not found"));
