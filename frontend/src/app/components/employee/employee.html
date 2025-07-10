@@ -47,11 +47,15 @@
 		</ng-template>
 	</table>
 	<div *ngIf = "totalPages > 1" class="pagination">
-		<button (click)="goToPage(currentPage-1)" [disabled]="currentPage===0">Prev</button>
-		<button *ngFor = "let page of [].constructor(totalPages); let i = index"
+		<a (click)="goToPage(currentPage-1)" [class.disabled]="currentPage===0">
+			<i class="fas fa-angle-left"></i>
+		</a>
+		<a *ngFor = "let page of [].constructor(totalPages); let i = index"
 				(click)="goToPage(i)"
-				[disabled]="currentPage===i">{{ i + 1}}</button>
-		<button (click)="goToPage(currentPage+1)" [disabled]="currentPage>=totalPages - 1">Next</button>
+				[class.disabled]="currentPage===i">{{ i + 1}}</a>
+		<a (click)="goToPage(currentPage+1)" [class.disabled]="currentPage>=totalPages - 1">
+			<i class="fas fa-angle-right"></i>
+		</a>
 	</div>
 </div>
 <div class="modal-backdrop fade show" *ngIf="showAddModal || showEditModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1040;"></div>

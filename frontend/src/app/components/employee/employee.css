@@ -43,35 +43,39 @@
 
 .pagination {
   display: flex;
-  justify-content: center;
-  gap: 8px;
+  justify-content: flex-end;
+  gap: 10px;
   margin-top: 20px;
   flex-wrap: wrap;
+  font-family: Arial, sans-serif;
 }
 
-.pagination button {
-  background-color: #f5f5f5;
-  border: 1px solid #ccc;
-  padding: 6px 12px;
-  font-size: 14px;
+.pagination a {
+  color: #007bff;
+  text-decoration: none;
+  padding: 4px 10px;
   border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease;
+  font-size: 14px;
 }
 
-.pagination button:hover:not(:disabled) {
-  background-color: #e0e0e0;
+.pagination a:hover:not(.disabled):not(.active) {
+  background-color: #e0f0ff;
 }
 
-.pagination button:disabled {
-  background-color: #f0f0f0;
-  color: #999;
-  cursor: not-allowed;
-}
-
-.pagination button.active {
-  background-color: #2196f3;
-  color: white;
-  border-color: #2196f3;
+.pagination a.active {
   font-weight: bold;
+  color: white;
+  background-color: #007bff;
+}
+
+.pagination a.disabled {
+  color: #ccc;
+  pointer-events: none;
+  cursor: default;
+}
+
+.pagination a i {
+  font-size: 14px;
 }

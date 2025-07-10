@@ -82,7 +82,6 @@ export class EmployeeComponent implements OnInit{
       emp.email.toLowerCase().includes(this.searchTerm)
     );
     this.totalPages = Math.ceil(this.filteredEmployees.length / this.pageSize);
-    console.log(this.totalPages);
     this.paginateEmployees();
   }
 
@@ -90,7 +89,6 @@ export class EmployeeComponent implements OnInit{
     const start = this.currentPage * this.pageSize;
     const end = start + this.pageSize;
     this.paginatedEmployees = this.filteredEmployees.slice(start,end);
-    console.log(this.paginatedEmployees);
   }
 
   goToPage(pageIndex : number): void{
