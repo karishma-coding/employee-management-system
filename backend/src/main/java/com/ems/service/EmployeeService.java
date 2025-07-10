@@ -30,6 +30,10 @@ public class EmployeeService {
         return employeeRepository.findById(id);
     }
 
+    public List<Employee> searchEmployees(String keyword){
+        return employeeRepository.searchByKeyword(keyword);
+    }
+
     public Employee saveEmployee(CreateEmployeeDTO employeeDto){
         Employee employee = new Employee();
         employee.setName(employeeDto.getName());

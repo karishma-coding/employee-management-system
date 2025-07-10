@@ -20,6 +20,8 @@ import com.ems.model.Employee;
 import com.ems.service.EmployeeService;
 
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @CrossOrigin("http://localhost:4200")
@@ -41,6 +43,12 @@ public class EmployeeController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Employee>> searchEmployee(@RequestParam("keyword") String keyword) {
+        return ResponseEntity.ok(employeeService.searchEmployees(keyword));
+    }
+    
 
     @PostMapping
     public ResponseEntity<?> saveEmployee(@Valid @RequestBody CreateEmployeeDTO employee){
