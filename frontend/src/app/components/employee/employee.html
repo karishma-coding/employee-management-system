@@ -15,7 +15,7 @@
 	</div>
 	
 	
-	<input type="text" class="form-control mb-3 search" placeholder="Search..." [(ngModel)]="searchTerm" (input)="filterEmployees()" />
+	<input type="text" class="form-control mb-3 search" placeholder="Search..." [(ngModel)]="searchTerm" (ngModelChange)="onSearchTermChange()" (input)="filterEmployees()" />
 	<table *ngIf="!loading" class="employee-table" >
 		<thead>
 			<tr>
@@ -26,8 +26,8 @@
 				<th>Operations</th>
 			</tr>
 		</thead>
-		<tbody *ngIf="!loading && filteredEmployees.length > 0; else noData">
-			<tr *ngFor="let emp of filteredEmployees">
+		<tbody *ngIf="!loading && paginatedEmployees.length > 0; else noData">
+			<tr *ngFor="let emp of paginatedEmployees">
 				<td>{{emp.id}}</td>
 				<td>{{emp.name}}</td>
 				<td>{{emp.title}}</td>
@@ -46,6 +46,13 @@
 			</tbody>
 		</ng-template>
 	</table>
+	<div *ngIf = "totalPages > 1" class="pagination">
+		<button (click)="goToPage(currentPage-1)" [disabled]="currentPage===0">Prev</button>
+		<button *ngFor = "let page of [].constructor(totalPages); let i = index"
+				(click)="goToPage(i)"
+				[disabled]="currentPage===i">{{ i + 1}}</button>
+		<button (click)="goToPage(currentPage+1)" [disabled]="currentPage>=totalPages - 1">Next</button>
+	</div>
 </div>
 <div class="modal-backdrop fade show" *ngIf="showAddModal || showEditModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1040;"></div>
 <div

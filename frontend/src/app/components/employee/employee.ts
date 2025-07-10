@@ -18,6 +18,7 @@ import { Router } from '@angular/router';
 export class EmployeeComponent implements OnInit{
   employees: Employee[] = [];
   filteredEmployees: Employee[] = [];
+  paginatedEmployees: Employee[] = [];
   loading: boolean = true;
   employee: Employee = {id: 0, name: '', title: '', email: '', password: ''};
   searchTerm: string='';
@@ -28,6 +29,9 @@ export class EmployeeComponent implements OnInit{
   showPassword: boolean = false;
   validationErrors: { [key: string]: string } = {}; 
   errorMsg: string = "";
+  pageSize: number = 10;
+  currentPage: number = 0;
+  totalPages: number = 0;
 
   constructor(private fb: FormBuilder, private service: EmployeeService, private router: Router) {
 
@@ -57,20 +61,43 @@ export class EmployeeComponent implements OnInit{
   getEmployees(): void {
     this.service.getEmployees().subscribe(
       (data) => {
-      this.employees = data;
-      this.filterEmployees();
+        this.employees = data;
+        this.filterEmployees();
       }
     );
+  }
+  
+  onSearchTermChange(): void{
+    this.currentPage = 0;
+    this.filterEmployees();
   }
 
   filterEmployees(): void{
     const term = this.searchTerm.toLowerCase();
+    this.currentPage = 0;
     this.filteredEmployees = this.employees.filter(emp => 
       emp.id?.toString().toLowerCase().includes(this.searchTerm) ||
       emp.name.toLowerCase().includes(this.searchTerm) ||
       emp.title.toLowerCase().includes(this.searchTerm) ||
       emp.email.toLowerCase().includes(this.searchTerm)
     );
+    this.totalPages = Math.ceil(this.filteredEmployees.length / this.pageSize);
+    console.log(this.totalPages);
+    this.paginateEmployees();
+  }
+
+  paginateEmployees(): void{
+    const start = this.currentPage * this.pageSize;
+    const end = start + this.pageSize;
+    this.paginatedEmployees = this.filteredEmployees.slice(start,end);
+    console.log(this.paginatedEmployees);
+  }
+
+  goToPage(pageIndex : number): void{
+    if(pageIndex >=0 && pageIndex < this.totalPages){
+      this.currentPage = pageIndex;
+      this.paginateEmployees();
+    }
   }
 
   saveEmployee(): void{
@@ -125,6 +152,10 @@ export class EmployeeComponent implements OnInit{
 
   resetForm(): void{
     this.employee = {id: 0, name: '', title: '', email: '', password: ''};
+    this.employeeForm.get('name')?.setValue('');
+    this.employeeForm.get('title')?.setValue('');
+    this.employeeForm.get('email')?.setValue('');
+    this.employeeForm.get('password')?.setValue('');
   }
 
   openAddModal(): void{
