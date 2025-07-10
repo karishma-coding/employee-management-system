@@ -41,6 +41,19 @@
   flex-direction: column;
 }
 
+.page-size-dropdown {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+  gap: 8px;
+  font-size: 14px;
+}
+.page-size-dropdown select {
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
 .pagination {
   display: flex;
   justify-content: flex-end;

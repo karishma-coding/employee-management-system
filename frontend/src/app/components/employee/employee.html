@@ -12,11 +12,10 @@
 		<div class="flex-column">
 			<button class="btn btn-danger mb-3 text-right" (click)="logout()">Logout</button>
 		</div>
-	</div>
-	
+	</div>	
 	
 	<input type="text" class="form-control mb-3 search" placeholder="Search..." [(ngModel)]="searchTerm" (ngModelChange)="onSearchTermChange()" (input)="filterEmployees()" />
-	<table *ngIf="!loading" class="employee-table" >
+	<table *ngIf="!loading" class="employee-table my-4">
 		<thead>
 			<tr>
 				<th>Employee ID</th>
@@ -46,6 +45,12 @@
 			</tbody>
 		</ng-template>
 	</table>
+	<div class="page-size-dropdown">
+		<label for="pageSize">Records per page:</label>
+		<select id="pageSize" [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+			<option *ngFor="let size of [5,10,25,50]" [value]="size">{{ size }}</option>
+		</select>
+	</div>
 	<div *ngIf = "totalPages > 1" class="pagination">
 		<a (click)="goToPage(currentPage-1)" [class.disabled]="currentPage===0">
 			<i class="fas fa-angle-left"></i>

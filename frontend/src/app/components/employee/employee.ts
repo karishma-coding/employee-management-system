@@ -85,6 +85,12 @@ export class EmployeeComponent implements OnInit{
     this.paginateEmployees();
   }
 
+  onPageSizeChange(): void{
+    this.currentPage = 0;
+    this.totalPages = Math.ceil(this.filteredEmployees.length/this.pageSize);
+    this.paginateEmployees();
+  }
+
   paginateEmployees(): void{
     const start = this.currentPage * this.pageSize;
     const end = start + this.pageSize;
