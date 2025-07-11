@@ -30,7 +30,9 @@
 		<thead>
 			<tr>
 				<th>
-					<input type="checkbox" [(ngModel)]="selectedAll" (change)="toggleAllSelection()">
+					<input type="checkbox" 
+							[(ngModel)]="selectedAll" 
+							(change)="toggleAllSelection()"/>
 				</th>
 				<th (click)="sortBy('id')">
 					<div class="header-with-icons">
@@ -98,7 +100,10 @@
 		<tbody *ngIf="!loading && paginatedEmployees.length > 0; else noData">
 			<tr *ngFor="let emp of paginatedEmployees">
 				<td>
-					<input type="checkbox" [(ngModel)] = "emp.selected" (change) = "updateSelection()"/>
+					<input type="checkbox" 
+							[(ngModel)] = "emp.selected" 
+							(change) = "updateSelection()"
+							[disabled]="emp.email === loggedInEmail"/>
 				</td>
 				<td>{{emp.id}}</td>
 				<td>{{emp.name}}</td>
@@ -106,7 +111,7 @@
 				<td>{{emp.email}}</td>
 				<td>
 					<button class="btn btn-sm btn-primary me-2" (click)="openEditModal(emp)">Edit</button>
-					<button class="btn btn-sm btn-danger" (click)="deleteEmployee(emp.id!)">Delete</button>
+					<button class="btn btn-sm btn-danger" (click)="deleteEmployee(emp.id!)" [disabled]="emp.email === loggedInEmail">Delete</button>
 				</td>
 			</tr>
 		</tbody>

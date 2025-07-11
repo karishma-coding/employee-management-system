@@ -21,7 +21,7 @@ export class AuthService {
     return this.http.post(this.loginUrl, user, { responseType: 'text' }).pipe(
       tap((res: string) => {
         if(res==="Login successful"){
-          localStorage.setItem("isLoggedIn","true");
+          localStorage.setItem("loggedInEmail",email);
         }
       })
     );

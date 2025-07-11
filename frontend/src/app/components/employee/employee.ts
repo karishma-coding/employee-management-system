@@ -37,6 +37,7 @@ export class EmployeeComponent implements OnInit{
   sortDirection: 'asc' | 'desc' = 'asc';
   selectedAll: boolean = false;
   selectedEmployeeIds: number[] = [];
+  loggedInEmail = '';
 
   constructor(private fb: FormBuilder, private service: EmployeeService, private router: Router) {
 
@@ -44,6 +45,7 @@ export class EmployeeComponent implements OnInit{
   
   ngOnInit(): void {
     this.loading = true;
+    this.loggedInEmail = localStorage.getItem("loggedInEmail") || '';
     this.employeeForm = this.fb.group({
       name: ['', [Validators.required, Validators.pattern(/^[A-Za-z ]+$/)]],
       title: ['', [Validators.required, Validators.pattern(/^[A-Za-z ]+$/)]],
@@ -236,7 +238,7 @@ export class EmployeeComponent implements OnInit{
   }  
 
   logout(): void{
-    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("loggedInEmail");
     this.router.navigate(["/"]);
   }
 

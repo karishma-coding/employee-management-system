@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit{
     this.authService.login(email,password).subscribe({
       next: (res: string) => {
         this.errorMsg = '';
-        localStorage.setItem("isLoggedIn","true")
+        localStorage.setItem("loggedInEmail",email);
         this.router.navigate(["/employee"]);
       },
       error: (err) => {
