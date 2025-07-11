@@ -32,6 +32,8 @@ export class EmployeeComponent implements OnInit{
   pageSize: number = 10;
   currentPage: number = 0;
   totalPages: number = 0;
+  sortColumn: string = '';
+  sortDirection: 'asc' | 'desc' = 'asc';
 
   constructor(private fb: FormBuilder, private service: EmployeeService, private router: Router) {
 
@@ -208,5 +210,32 @@ export class EmployeeComponent implements OnInit{
 
   validationErrorKeys(): string[] {
     return Object.keys(this.validationErrors);
+  }
+
+  sortBy(column: keyof Employee, direction?: "asc" | "desc"): void{
+    if(direction){
+      this.sortDirection = direction;
+      this.sortColumn = column;
+    }
+    else{
+      if(this.sortColumn === column){
+        this.sortDirection = this.sortDirection=="asc" ? "desc" : "asc";
+      }
+      else{
+        this.sortColumn = column;
+        this.sortDirection = "asc";
+      }
+    }
+    this.filteredEmployees.sort((a,b) => {
+      const valA = a[column]?.toString().toLowerCase() || "";
+      const valB = b[column]?.toString().toLowerCase() || "";
+      if(valA < valB){
+        return this.sortDirection === "asc" ? -1 : 1;
+      }
+      else{
+        return this.sortDirection === "asc" ? 1 : -1;
+      }
+    });
+    this.paginateEmployees();
   }
 }

@@ -18,10 +18,66 @@
 	<table *ngIf="!loading" class="employee-table my-4">
 		<thead>
 			<tr>
-				<th>Employee ID</th>
-				<th>Name</th>
-				<th>Title</th>
-				<th>Email</th>
+				<th (click)="sortBy('id')">
+					<div class="header-with-icons">
+						Employee ID
+						<span class="sort-icons" (click)="$event.stopPropagation()">
+							<i class="fas fa-sort-up" 
+								(click)="sortBy('id','asc')"
+								[class.active]="sortColumn === 'id' && sortDirection === 'asc'">
+							</i>
+							<i class="fas fa-sort-down" 
+								(click)="sortBy('id','desc')"
+								[class.active]="sortColumn === 'id' && sortDirection === 'desc'">
+							</i>
+						</span>
+					</div>
+				</th>
+				<th (click)="sortBy('name')">
+					<div class="header-with-icons">
+						Name
+						<span class="sort-icons" (click)="$event.stopPropagation()">
+							<i class="fas fa-sort-up" 
+								(click)="sortBy('name','asc')"
+								[class.active]="sortColumn === 'name' && sortDirection === 'asc'">
+							</i>
+							<i class="fas fa-sort-down" 
+								(click)="sortBy('name','desc')"
+								[class.active]="sortColumn === 'name' && sortDirection === 'desc'">
+							</i>
+						</span>
+					</div>
+				</th>
+				<th (click)="sortBy('title')">
+					<div class="header-with-icons">
+						Title
+						<span class="sort-icons" (click)="$event.stopPropagation()">
+							<i class="fas fa-sort-up" 
+								(click)="sortBy('title','asc')"
+								[class.active]="sortColumn === 'title' && sortDirection === 'asc'">
+							</i>
+							<i class="fas fa-sort-down" 
+								(click)="sortBy('title','desc')"
+								[class.active]="sortColumn === 'title' && sortDirection === 'desc'">
+							</i>
+						</span>
+					</div>
+				</th>
+				<th (click)="sortBy('email')">
+					<div class="header-with-icons">
+						Email
+						<span class="sort-icons" (click)="$event.stopPropagation()">
+							<i class="fas fa-sort-up" 
+								(click)="sortBy('email','asc')"
+								[class.active]="sortColumn === 'email' && sortDirection === 'asc'">
+							</i>
+							<i class="fas fa-sort-down" 
+								(click)="sortBy('email','desc')"
+								[class.active]="sortColumn === 'email' && sortDirection === 'desc'">
+							</i>
+						</span>
+					</div>
+				</th>
 				<th>Operations</th>
 			</tr>
 		</thead>

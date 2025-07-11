@@ -9,6 +9,44 @@
     text-align: center;
 }
 
+.header-with-icons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sort-icons {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+}
+
+.sort-icons i {
+  font-size: 20px;
+  color: #999;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+  height: 15px;
+}
+
+.sort-icons i.active {
+  color: #007bff;
+}
+
+.sort-icons i:hover {
+  color: #333;
+}
+
+.sort-icons i::before,
+.sort-icons i::after {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 .search{
     width: 50%;
     align-content: center;
