@@ -15,9 +15,23 @@
 	</div>	
 	
 	<input type="text" class="form-control mb-3 search" placeholder="Search..." [(ngModel)]="searchTerm" (ngModelChange)="onSearchTermChange()" (input)="filterEmployees()" />
+	<div class="flex-container">
+		<div class="flex-column">
+		</div>
+		<div class="flex-column">
+			<button *ngIf="selectedEmployeeIds.length"
+				(click)="deleteSelectedEmployees()"
+				class="delete-selected-btn">
+				Delete Selected ({{ selectedEmployeeIds.length }})
+			</button>
+		</div>
+	</div>	
 	<table *ngIf="!loading" class="employee-table my-4">
 		<thead>
 			<tr>
+				<th>
+					<input type="checkbox" [(ngModel)]="selectedAll" (change)="toggleAllSelection()">
+				</th>
 				<th (click)="sortBy('id')">
 					<div class="header-with-icons">
 						Employee ID
@@ -83,6 +97,9 @@
 		</thead>
 		<tbody *ngIf="!loading && paginatedEmployees.length > 0; else noData">
 			<tr *ngFor="let emp of paginatedEmployees">
+				<td>
+					<input type="checkbox" [(ngModel)] = "emp.selected" (change) = "updateSelection()"/>
+				</td>
 				<td>{{emp.id}}</td>
 				<td>{{emp.name}}</td>
 				<td>{{emp.title}}</td>

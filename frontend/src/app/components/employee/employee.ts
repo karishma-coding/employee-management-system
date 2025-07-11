@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { title } from 'process';
 import { error } from 'console';
 import { Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -34,6 +35,8 @@ export class EmployeeComponent implements OnInit{
   totalPages: number = 0;
   sortColumn: string = '';
   sortDirection: 'asc' | 'desc' = 'asc';
+  selectedAll: boolean = false;
+  selectedEmployeeIds: number[] = [];
 
   constructor(private fb: FormBuilder, private service: EmployeeService, private router: Router) {
 
@@ -154,6 +157,35 @@ export class EmployeeComponent implements OnInit{
         }
       });
     }
+  }
+
+  toggleAllSelection(): void {
+    this.paginatedEmployees.forEach(emp => emp.selected = this.selectedAll);
+    this.updateSelection();
+  }
+
+  updateSelection(): void{
+    this.selectedEmployeeIds = this.paginatedEmployees.filter(emp => emp.selected).map(emp => emp.id);
+    this.selectedAll = this.paginatedEmployees.length > 0 &&
+                        this.paginatedEmployees.every(emp => emp.selected);    
+  }
+
+  deleteSelectedEmployees(): void{
+    const confirmed = confirm(`Are you sure you want to delete ${this.selectedEmployeeIds.length} employee(s)`);
+    if(!confirmed){
+      return;
+    }
+    const deleteObservables = this.selectedEmployeeIds.map(id => this.service.deleteEmployee(id));
+    forkJoin(deleteObservables).subscribe({
+      next: () => {
+        this.getEmployees();
+        this.selectedEmployeeIds = [];
+        this.selectedAll = false;
+      },
+      error: (err) => {
+        console.log("Error occurred while deleteing records: "+err);
+      }
+    });
   }
 
   resetForm(): void{

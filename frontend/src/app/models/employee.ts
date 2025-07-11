@@ -4,4 +4,5 @@ export interface Employee{
     title: string;
     email: string;
     password?: string;
+    selected?: boolean;
 }
