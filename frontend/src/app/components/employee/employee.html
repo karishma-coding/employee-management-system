@@ -79,6 +79,21 @@
 						</span>
 					</div>
 				</th>
+				<th (click)="sortBy('role')">
+					<div class="header-with-icons">
+						Role
+						<span class="sort-icons" (click)="$event.stopPropagation()">
+							<i class="fas fa-sort-up" 
+								(click)="sortBy('role','asc')"
+								[class.active]="sortColumn === 'role' && sortDirection === 'asc'">
+							</i>
+							<i class="fas fa-sort-down" 
+								(click)="sortBy('role','desc')"
+								[class.active]="sortColumn === 'role' && sortDirection === 'desc'">
+							</i>
+						</span>
+					</div>
+				</th>
 				<th (click)="sortBy('email')">
 					<div class="header-with-icons">
 						Email
@@ -108,6 +123,7 @@
 				<td>{{emp.id}}</td>
 				<td>{{emp.name}}</td>
 				<td>{{emp.title}}</td>
+				<td>{{emp.role}}</td>
 				<td>{{emp.email}}</td>
 				<td *ngIf="role==='ADMIN'">
 					<button class="btn btn-sm btn-primary me-2" (click)="openEditModal(emp)">Edit</button>
@@ -118,7 +134,7 @@
 		<ng-template #noData>
 			<tbody *ngIf="!loading">
 				<tr>
-					<td colspan="6" class="text-center text-muted">No records found</td>
+					<td colspan="7" class="text-center text-muted">No records found</td>
 				</tr>
 			</tbody>
 		</ng-template>
@@ -194,6 +210,12 @@
 						*ngIf="employeeForm.get('title')?.hasError('pattern') && employeeForm.get('title')?.touched">
 					Title must contain only alphabets and spaces.
 					</small>
+				</div>
+				<div class="mb-3">
+					<label>Role: </label>
+					<select id="role" formControlName="role">
+						<option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+					</select>
 				</div>
 				<div class="mb-3">
 					<label>Email</label>
@@ -298,6 +320,12 @@
 						*ngIf="employeeForm.get('title')?.hasError('pattern') && employeeForm.get('title')?.touched">
 					Title must contain only alphabets and spaces.
 					</small>
+				</div>
+				<div class="mb-3">
+					<label>Role: </label>
+					<select id="role" formControlName="role">
+						<option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+					</select>
 				</div>
 				<div class="mb-3">
 					<label>Email</label>

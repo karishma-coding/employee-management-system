@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import com.ems.dto.CreateEmployeeDTO;
 import com.ems.dto.UpdateEmployeeDTO;
 import com.ems.model.Employee;
+import com.ems.model.Role;
 import com.ems.repository.EmployeeRepository;
 
 @Validated
@@ -39,6 +40,7 @@ public class EmployeeService {
         employee.setName(employeeDto.getName());
         employee.setTitle(employeeDto.getTitle());
         employee.setEmail(employeeDto.getEmail());
+        employee.setRole(Role.valueOf(employeeDto.getRole()));
         String hashPassword = passwordEncoder.encode(employeeDto.getPassword());
         employee.setPassword(hashPassword);
         return employeeRepository.save(employee);
@@ -50,6 +52,7 @@ public class EmployeeService {
                 emp.setName(newEmployee.getName());
                 emp.setEmail(newEmployee.getEmail());
                 emp.setTitle(newEmployee.getTitle());
+                emp.setRole(Role.valueOf(newEmployee.getRole()));
                 return employeeRepository.save(emp);
             }).orElseThrow(() -> new RuntimeException("Employee not found"));
     }

@@ -17,6 +17,9 @@ public class CreateEmployeeDTO {
     @Email(message = "Email should be valid")
     private String email;
 
+    @NotBlank(message = "Role is required")
+    private String role;
+
     @NotBlank(message = "Password is required")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\W_]).{8,20}$", message = "Password must be 8-20 characters having 1 uppercase character, 1 lowercase character, 1 number and 1 special character")
     private String password;
@@ -37,6 +40,14 @@ public class CreateEmployeeDTO {
         this.title = title;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+    
     public String getEmail() {
         return email;
     }

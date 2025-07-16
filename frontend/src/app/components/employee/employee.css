@@ -146,3 +146,7 @@
 .delete-selected-btn:hover {
   background-color: #c62828;
 }
+
+#role{
+  margin-left: 10px;
+}

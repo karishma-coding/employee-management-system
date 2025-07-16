@@ -13,9 +13,13 @@ public class UpdateEmployeeDTO {
     @Pattern(regexp = "^[A-Za-z ]+$", message = "Title must contain only alphabets and spaces.")
     private String title;
 
+    @NotBlank(message = "Role is required")
+    private String role;
+
     @NotBlank(message = "Email is required")
     @Email(message = "Email should be valid")
     private String email;
+    
 
     public String getName() {
         return name;
@@ -33,11 +37,19 @@ public class UpdateEmployeeDTO {
         this.title = title;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }    
+
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }    
+    }
 }

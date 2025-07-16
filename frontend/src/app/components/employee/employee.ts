@@ -22,7 +22,7 @@ export class EmployeeComponent implements OnInit{
   filteredEmployees: Employee[] = [];
   paginatedEmployees: Employee[] = [];
   loading: boolean = true;
-  employee: Employee = {id: 0, name: '', title: '', email: '', password: ''};
+  employee: Employee = {id: 0, name: '', title: '',role: 'USER', email: '', password: ''};
   loggedInEmployee: ResponseDTO | null = null;
   searchTerm: string='';
   showAddModal: boolean = false;
@@ -41,6 +41,7 @@ export class EmployeeComponent implements OnInit{
   selectedEmployeeIds: number[] = [];
   loggedInEmail = '';
   role = '';
+  roles: string[] = ['USER','ADMIN'];
 
   constructor(private fb: FormBuilder, private service: EmployeeService, private router: Router, private authService: AuthService) {
 
@@ -54,6 +55,7 @@ export class EmployeeComponent implements OnInit{
     this.employeeForm = this.fb.group({
       name: ['', [Validators.required, Validators.pattern(/^[A-Za-z ]+$/)]],
       title: ['', [Validators.required, Validators.pattern(/^[A-Za-z ]+$/)]],
+      role: ['USER', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: [
         '',
@@ -71,6 +73,7 @@ export class EmployeeComponent implements OnInit{
   }
 
   getEmployees(): void {
+    this.role = localStorage.getItem("role") || "";
     this.service.getEmployees().subscribe(
       (data) => {
         this.employees = data;
@@ -146,6 +149,9 @@ export class EmployeeComponent implements OnInit{
     }
     this.employee = this.employeeForm.value;
     this.service.updateEmployee(this.employeeId!, this.employee).subscribe( () => {
+      if(this.loggedInEmail==this.employee.email){
+        localStorage.setItem("role",this.employee.role);
+      }
       this.getEmployees();
       this.resetForm();
       this.closeModal();
@@ -196,7 +202,7 @@ export class EmployeeComponent implements OnInit{
   }
 
   resetForm(): void{
-    this.employee = {id: 0, name: '', title: '', email: '', password: ''};
+    this.employee = {id: 0, name: '', title: '',role: 'USER', email: '', password: ''};
     this.employeeForm.get('name')?.setValue('');
     this.employeeForm.get('title')?.setValue('');
     this.employeeForm.get('email')?.setValue('');
@@ -229,6 +235,7 @@ export class EmployeeComponent implements OnInit{
     this.employeeForm.patchValue({
       name: emp.name,
       title: emp.title,
+      role: emp.role,
       email: emp.email
     });
   }
