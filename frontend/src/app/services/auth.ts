@@ -7,6 +7,14 @@ interface Employee{
   password: string;
 }
 
+export interface ResponseDTO {
+  id: number;
+  name: string;
+  title: string;
+  role: string;
+  email: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -16,14 +24,18 @@ export class AuthService {
   constructor(private http:HttpClient) {
   }
 
-  login(email: string, password: string): Observable<string> {
+  login(email: string, password: string): Observable<ResponseDTO> {
     const user: Employee = { email, password };
-    return this.http.post(this.loginUrl, user, { responseType: 'text' }).pipe(
-      tap((res: string) => {
-        if(res==="Login successful"){
-          localStorage.setItem("loggedInEmail",email);
-        }
+    return this.http.post<ResponseDTO>(this.loginUrl, user).pipe(
+      tap((res: ResponseDTO) => {
+        console.log("REs: "+res)
+        localStorage.setItem("employee", JSON.stringify(res));
       })
     );
+  }
+
+  getLoggedInUser(): ResponseDTO | null {
+    const user = localStorage.getItem('employee');
+    return user ? JSON.parse(user) as ResponseDTO : null;
   }
 }

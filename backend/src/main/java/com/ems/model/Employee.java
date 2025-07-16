@@ -1,6 +1,8 @@
 package com.ems.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,6 +14,9 @@ public class Employee {
     private long id;
     private String name;
     private String title;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
     private String email;
     private String password;
     
@@ -40,6 +45,22 @@ public class Employee {
         this.name = name;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -55,14 +76,4 @@ public class Employee {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    
 }

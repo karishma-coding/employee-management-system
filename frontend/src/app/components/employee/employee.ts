@@ -7,6 +7,7 @@ import { title } from 'process';
 import { error } from 'console';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
+import { AuthService, ResponseDTO } from '../../services/auth';
 
 @Component({
   standalone: true,
@@ -22,6 +23,7 @@ export class EmployeeComponent implements OnInit{
   paginatedEmployees: Employee[] = [];
   loading: boolean = true;
   employee: Employee = {id: 0, name: '', title: '', email: '', password: ''};
+  loggedInEmployee: ResponseDTO | null = null;
   searchTerm: string='';
   showAddModal: boolean = false;
   showEditModal: boolean = false;
@@ -38,14 +40,17 @@ export class EmployeeComponent implements OnInit{
   selectedAll: boolean = false;
   selectedEmployeeIds: number[] = [];
   loggedInEmail = '';
+  role = '';
 
-  constructor(private fb: FormBuilder, private service: EmployeeService, private router: Router) {
+  constructor(private fb: FormBuilder, private service: EmployeeService, private router: Router, private authService: AuthService) {
 
   }
   
   ngOnInit(): void {
     this.loading = true;
-    this.loggedInEmail = localStorage.getItem("loggedInEmail") || '';
+    this.loggedInEmployee = this.authService.getLoggedInUser();
+    this.loggedInEmail = localStorage.getItem("loggedInEmail") || "";
+    this.role = localStorage.getItem("role") || "";
     this.employeeForm = this.fb.group({
       name: ['', [Validators.required, Validators.pattern(/^[A-Za-z ]+$/)]],
       title: ['', [Validators.required, Validators.pattern(/^[A-Za-z ]+$/)]],
@@ -239,6 +244,8 @@ export class EmployeeComponent implements OnInit{
 
   logout(): void{
     localStorage.removeItem("loggedInEmail");
+    localStorage.removeItem("employee");
+    localStorage.removeItem("role");
     this.router.navigate(["/"]);
   }
 

@@ -7,7 +7,7 @@
 	</div>
 	<div class="flex-container">
 		<div class="flex-column">
-			<button class="btn btn-primary mb-3 text-left" (click)="openAddModal()">Add Employee</button>
+			<button class="btn btn-primary mb-3 text-left" (click)="openAddModal()" *ngIf="role==='ADMIN'">Add Employee</button>
 		</div>
 		<div class="flex-column">
 			<button class="btn btn-danger mb-3 text-right" (click)="logout()">Logout</button>
@@ -29,7 +29,7 @@
 	<table *ngIf="!loading" class="employee-table my-4">
 		<thead>
 			<tr>
-				<th>
+				<th *ngIf="role==='ADMIN'">
 					<input type="checkbox" 
 							[(ngModel)]="selectedAll" 
 							(change)="toggleAllSelection()"/>
@@ -94,12 +94,12 @@
 						</span>
 					</div>
 				</th>
-				<th>Operations</th>
+				<th *ngIf="role==='ADMIN'">Operations</th>
 			</tr>
 		</thead>
 		<tbody *ngIf="!loading && paginatedEmployees.length > 0; else noData">
 			<tr *ngFor="let emp of paginatedEmployees">
-				<td>
+				<td *ngIf="role==='ADMIN'">
 					<input type="checkbox" 
 							[(ngModel)] = "emp.selected" 
 							(change) = "updateSelection()"
@@ -109,7 +109,7 @@
 				<td>{{emp.name}}</td>
 				<td>{{emp.title}}</td>
 				<td>{{emp.email}}</td>
-				<td>
+				<td *ngIf="role==='ADMIN'">
 					<button class="btn btn-sm btn-primary me-2" (click)="openEditModal(emp)">Edit</button>
 					<button class="btn btn-sm btn-danger" (click)="deleteEmployee(emp.id!)" [disabled]="emp.email === loggedInEmail">Delete</button>
 				</td>
@@ -118,7 +118,7 @@
 		<ng-template #noData>
 			<tbody *ngIf="!loading">
 				<tr>
-					<td colspan="5" class="text-center text-muted">No records found</td>
+					<td colspan="6" class="text-center text-muted">No records found</td>
 				</tr>
 			</tbody>
 		</ng-template>
