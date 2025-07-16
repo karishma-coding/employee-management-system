@@ -231,7 +231,7 @@
 					Email is required.
 					</small>
 					<small class="text-danger"
-						*ngIf="employeeForm.get('email')?.hasError('email') && employeeForm.get('email')?.touched">
+						*ngIf="employeeForm.get('email')?.hasError('pattern') && employeeForm.get('email')?.touched">
 					Email must be in a valid format.
 					</small>
 				</div>
@@ -341,7 +341,7 @@
 					Email is required.
 					</small>
 					<small class="text-danger"
-						*ngIf="employeeForm.get('email')?.hasError('email') && employeeForm.get('email')?.touched">
+						*ngIf="employeeForm.get('email')?.hasError('pattern') && employeeForm.get('email')?.touched">
 					Email must be in a valid format.
 					</small>
 				</div>

@@ -18,7 +18,7 @@
 					Email is required.
 					</small>
 					<small class="text-danger"
-						*ngIf="loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched">
+						*ngIf="loginForm.get('email')?.hasError('pattern') && loginForm.get('email')?.touched">
 					Email must be in a valid format.
 					</small>
 				</div>

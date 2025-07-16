@@ -56,7 +56,7 @@ export class EmployeeComponent implements OnInit{
       name: ['', [Validators.required, Validators.pattern(/^[A-Za-z ]+$/)]],
       title: ['', [Validators.required, Validators.pattern(/^[A-Za-z ]+$/)]],
       role: ['USER', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$/)]],
       password: [
         '',
         [

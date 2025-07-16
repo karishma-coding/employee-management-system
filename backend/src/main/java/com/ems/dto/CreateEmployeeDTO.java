@@ -1,27 +1,26 @@
 package com.ems.dto;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 public class CreateEmployeeDTO {
-    @NotBlank(message = "Name is required")
+    @NotBlank(message = "Name is required.")
     @Pattern(regexp = "^[A-Za-z ]+$", message = "Name must contain only alphabets and spaces.")
     private String name;
 
-    @NotBlank(message = "Title is required")
+    @NotBlank(message = "Title is required.")
     @Pattern(regexp = "^[A-Za-z ]+$", message = "Title must contain only alphabets and spaces.")
     private String title;
 
-    @NotBlank(message = "Email is required")
-    @Email(message = "Email should be valid")
+    @NotBlank(message = "Email is required.")
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-z]{2,}$", message = "Email must be in a valid format.")
     private String email;
 
-    @NotBlank(message = "Role is required")
+    @NotBlank(message = "Role is required.")
     private String role;
 
-    @NotBlank(message = "Password is required")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\W_]).{8,20}$", message = "Password must be 8-20 characters having 1 uppercase character, 1 lowercase character, 1 number and 1 special character")
+    @NotBlank(message = "Password is required.")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\W_]).{8,20}$", message = "Password must be 8-20 characters having 1 uppercase character, 1 lowercase character, 1 number and 1 special character.")
     private String password;
 
     public String getName() {
