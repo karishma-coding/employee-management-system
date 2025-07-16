@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,13 +50,14 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.searchEmployees(keyword));
     }
     
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> saveEmployee(@Valid @RequestBody CreateEmployeeDTO employee){
         Employee saved = employeeService.saveEmployee(employee);
         return ResponseEntity.ok(saved);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public Employee updateEmployee(@PathVariable long id, @RequestBody UpdateEmployeeDTO newEmployee){
         return employeeService.updateEmployee(id, newEmployee);

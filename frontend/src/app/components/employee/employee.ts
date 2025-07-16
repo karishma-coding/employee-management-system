@@ -120,6 +120,11 @@ export class EmployeeComponent implements OnInit{
   }
 
   saveEmployee(): void{
+    const user = this.authService.getLoggedInUser();
+    if (user?.role !== 'ADMIN') {
+      alert('Access Denied: You are not authorized to submit this form.');
+      return;
+    }
     if(this.employeeForm.invalid){
       this.employeeForm.markAllAsTouched();
       return
@@ -143,6 +148,11 @@ export class EmployeeComponent implements OnInit{
   }
 
   updateEmployee(): void{
+    const user = this.authService.getLoggedInUser();
+    if (user?.role !== 'ADMIN') {
+      alert('Access Denied: You are not authorized to submit this form.');
+      return;
+    }
     if(this.employeeForm.invalid){
       this.employeeForm.markAllAsTouched();
       return
@@ -159,6 +169,11 @@ export class EmployeeComponent implements OnInit{
   }
 
   deleteEmployee(id: number): void {
+    const user = this.authService.getLoggedInUser();
+    if (user?.role !== 'ADMIN') {
+      alert('Access Denied: You are not authorized to submit this form.');
+      return;
+    }
     const confirmed = confirm("Do you wish to delete the records of employee id: " + id + "?");
     if(confirmed){
       this.service.deleteEmployee(id).subscribe({
@@ -210,6 +225,11 @@ export class EmployeeComponent implements OnInit{
   }
 
   openAddModal(): void{
+    const user = this.authService.getLoggedInUser();
+    if (user?.role !== 'ADMIN') {
+      alert('Access Denied: Only Admins can perform this action.');
+      return;
+    }
     this.showAddModal = true;
     this.resetForm();
     if(!this.employeeForm.contains("password")){
@@ -225,6 +245,11 @@ export class EmployeeComponent implements OnInit{
   }
 
   openEditModal(emp: any): void{
+    const user = this.authService.getLoggedInUser();
+    if (user?.role !== 'ADMIN') {
+      alert('Access Denied: Only Admins can perform this action.');
+      return;
+    }
     this.showEditModal = true;
     this.employeeId = emp.id;
 
